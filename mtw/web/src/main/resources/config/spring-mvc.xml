@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 自动扫描的包名 -->
+    <context:component-scan base-package="com.xrh" />
+
+    <!-- 默认的注解映射的支持 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <ref bean="stringHttpMessageConverter" />
+            <ref bean="fastJsonHttpMessageConverter" />
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg value="UTF-8" index="0"></constructor-arg>
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+        <property name="fastJsonConfig">
+            <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                <property name="features">
+                    <list>
+                        <value>AllowArbitraryCommas</value>
+                        <value>AllowUnQuotedFieldNames</value>
+                        <value>DisableCircularReferenceDetect</value>
+                    </list>
+                </property>
+                <property name="serializerFeatures">
+                    <array value-type="com.alibaba.fastjson.serializer.SerializerFeature">
+                        <!-- 是否输出值为null的字段 -->
+                        <value>WriteMapNullValue</value>
+                        <!-- 数值字段如果为null,输出为0,而非null -->
+                        <value>WriteNullNumberAsZero</value>
+                        <!-- 字符类型字段如果为null,输出为"",而非null -->
+                        <value>WriteNullStringAsEmpty</value>
+                        <!-- list字段如果为null,输出为[],而非null -->
+                        <value>WriteNullListAsEmpty</value>
+                        <!-- boolean字段如果为null,输出为false,而非null -->
+                        <value>WriteNullBooleanAsFalse</value>
+                        <!-- 兼容 IE6 -->
+                        <value>BrowserCompatible</value>
+                        <!--disable循环引用-->
+                        <value>DisableCircularReferenceDetect</value>
+                    </array>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!--静态资源访问 -->
+    <mvc:default-servlet-handler />
+
+    <!-- 定义无Controller的path<->view直接映射 -->
+    <mvc:view-controller path="/" view-name="redirect:/demo/index"/>
+
+    <!--载入配置文件-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:/config/application.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 对模型视图添加前后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/pages/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 上传拦截，如最大上传值及最小上传值 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10000000" />
+    </bean>
+
+    <!-- 控制器异常处理 -->
+    <bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+    </bean>
+
+    <!--sso 单点登录拦截器-->
+    <!--<import resource="classpath:sso/spring-sso-config.xml" />-->
+    <import resource="classpath:config/spring-mybatis.xml" />
+</beans>
