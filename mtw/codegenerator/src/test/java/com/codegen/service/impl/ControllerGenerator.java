@@ -1,5 +1,6 @@
 package com.codegen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.codegen.service.CodeGenerator;
 import com.codegen.service.CodeGeneratorManager;
 import com.codegen.util.DataUtil;
@@ -42,6 +43,7 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
             if (!controllerFile.getParentFile().exists()) {
                 controllerFile.getParentFile().mkdirs();
             }
+            logger.info("模版数据: " + JSON.toJSONString(data));
             cfg.getTemplate("controller.ftl").process(data, new FileWriter(controllerFile));
             logger.info(modelNameUpperCamel + "Controller.java 生成成功!");
         } catch (Exception e) {
@@ -105,7 +107,7 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                 methodActionTypeMap.put(methodActionType, methodName);
                 StringBuilder methodContent = new StringBuilder();
                 if ("selectByPage--删除".equals(methodName)) {
-                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"" + methodActionType
+                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"/" + methodActionType
                                                                          + "\")\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("@ResponseBody\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("public Result<Page<").append(MethodUtil.typeConvert(methodReturnType)).append(">> ").append(methodName).append("(");
@@ -128,7 +130,7 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("return Result.success(result);\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 } else {
-                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"" + methodActionType
+                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"/" + methodActionType
                                                                          + "\")\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("@ResponseBody\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("public Result<").append(MethodUtil.typeConvert(methodReturnType)).append("> ").append(methodName).append("(");

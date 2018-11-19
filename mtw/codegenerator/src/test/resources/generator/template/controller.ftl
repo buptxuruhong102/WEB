@@ -20,7 +20,7 @@ import org.apache.ibatis.annotations.Param;
  * Created by ${author} on ${date}.
  */
 @Controller
-@RequestMapping("/${baseRequestMapping}/")
+@RequestMapping("/${baseRequestMapping}")
 public class ${modelNameUpperCamel}Controller {
 
     @Autowired
@@ -30,7 +30,7 @@ public class ${modelNameUpperCamel}Controller {
 ${serviceMethod!''}
 	</#list>
 
-    @RequestMapping("selectByPage")
+    @RequestMapping("/selectByPage")
     @ResponseBody
     public PageInfo selectByPage(${modelNameUpperCamel} ${modelNameLowerCamel},int pageNum, int pageSize){
         PageHelper.startPage(pageNum, pageSize); // 核心分页代码
