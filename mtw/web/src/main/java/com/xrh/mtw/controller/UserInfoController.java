@@ -6,6 +6,7 @@ import com.xrh.mtw.entity.UserInfo;
 import com.xrh.mtw.service.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by mybatis plugin on 2018/12/03.
  */
 @Controller
-@RequestMapping("/userInfo")
+@RequestMapping("/api/userInfo")
 public class UserInfoController {
 
     @Autowired
@@ -48,13 +49,13 @@ public class UserInfoController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Result<Integer> addSelective(UserInfo record){
+    public Result<Integer> addSelective(@RequestBody UserInfo record){
         return Result.success(userInfoService.addSelective(record));
     }
 
     @RequestMapping("/modify")
     @ResponseBody
-    public Result<Integer> modifyByPrimaryKeySelective(UserInfo record){
+    public Result<Integer> modifyByPrimaryKeySelective(@RequestBody UserInfo record){
         return Result.success(userInfoService.modifyByPrimaryKeySelective(record));
     }
 
@@ -73,11 +74,11 @@ public class UserInfoController {
 
     @RequestMapping("/findByPage")
     @ResponseBody
-    public PageInfo findByPage(UserInfo userInfo,int pageNum, int pageSize){
+    public Result<PageInfo> findByPage(UserInfo userInfo,int pageNum, int pageSize){
         PageHelper.startPage(pageNum, pageSize); // 核心分页代码
         List<UserInfo> list =  userInfoService.queryByCondition(userInfo);
         PageInfo pageInfo = new PageInfo(list);
-        return pageInfo;
+        return Result.success(pageInfo);
     }
 
 }

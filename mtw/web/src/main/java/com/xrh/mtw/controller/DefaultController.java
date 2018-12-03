@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,14 +45,16 @@ public class DefaultController {
     }
 
     @RequestMapping("/webSiteMan/api/currentUser")
-    public String currentUser(HttpServletRequest request, HttpServletResponse response, Model model){
+    @ResponseBody
+    public Map<String, Object> currentUser(HttpServletRequest request, HttpServletResponse response){
+        Map<String, Object>  model = new HashMap<>();
         Object name = request.getAttribute("pin");
 
-        model.addAttribute("userid","00000001");
-        model.addAttribute("name",name);
-        model.addAttribute("notifyCount","0");
+        model.put("userid","00000001");
+        model.put("name",name);
+        model.put("notifyCount","0");
 
-        return "";
+        return model;
     }
 
     @RequestMapping(value = "/api/rule")

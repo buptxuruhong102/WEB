@@ -1,19 +1,14 @@
 import { isUrl } from '../utils/utils';
 
 const menuData = [{
-  name: '垂直站点管理',
+  name: '菜单组1',
   icon: 'table',
   path: 'website',
   children: [  {
-    name: '站点管理',
-    path: 'info',
-  }, {
-    name: '平台管理',
-    path: 'platform',
-  }, {
-    name: '页面类型管理',
-    path: 'page-type',
-  }],
+    name: '用户信息',
+    path: 'userinfo',
+  },
+  ],
 }];
 
 function formatter(data, parentPath = '/', parentAuthority) {

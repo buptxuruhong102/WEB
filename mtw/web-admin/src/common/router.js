@@ -76,15 +76,16 @@ export const getRouterData = (app) => {
     '/website/table-list': {
       component: dynamicWrapper(app, ['rule'], () => import('../routes/List/TableList')),
     },
+
+    //业务功能
+    '/website/userinfo': {
+      component: dynamicWrapper(app, ['userinfo'], () => import('../routes/Website/Userinfo')),
+    },
     '/website/info': {
       component: dynamicWrapper(app, ['website'], () => import('../routes/Website/Website')),
     },
-    '/website/page-type': {
-      component: dynamicWrapper(app, ['pagetype'], () => import('../routes/Website/PageType')),
-    },
-    '/website/platform': {
-      component: dynamicWrapper(app, ['platform'], () => import('../routes/Website/Platform')),
-    },
+
+
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },
