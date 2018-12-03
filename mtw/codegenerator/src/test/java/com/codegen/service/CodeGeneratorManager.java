@@ -1,5 +1,16 @@
 package com.codegen.service;
 
+import com.codegen.service.impl.ControllerGenerator;
+import com.codegen.service.impl.ModelAndMapperGenerator;
+import com.codegen.service.impl.ServiceGenerator;
+import com.codegen.service.impl.ServiceInterfaceGenerator;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateExceptionHandler;
+import org.mybatis.generator.api.IntrospectedTable.TargetRuntime;
+import org.mybatis.generator.config.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,23 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
-import org.mybatis.generator.api.IntrospectedTable.TargetRuntime;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.config.JavaTypeResolverConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.codegen.service.impl.ControllerGenerator;
-import com.codegen.service.impl.ModelAndMapperGenerator;
-import com.codegen.service.impl.ServiceGenerator;
-
-import freemarker.template.Configuration;
-import freemarker.template.TemplateExceptionHandler;
 
 /**
  * 代码生成器基础项 (常量信息 & 通用方法) Created by zhh on 2017/09/20.
@@ -114,8 +108,6 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
      * IDemoServiceImpl & IDemoController
      * 
      * @param tableName 表名
-     * @param modelName 实体类名
-     * @param flag 标志
      */
     private void genCodeByTableName(String tableName) {
         new ModelAndMapperGenerator().genCode(tableName);

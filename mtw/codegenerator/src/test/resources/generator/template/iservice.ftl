@@ -1,6 +1,5 @@
-package ${servicePackage}.impl;
+package ${servicePackage};
 
-import ${servicePackage}.I${modelNameUpperCamel}Service;
 import ${modelPackage}.${modelNameUpperCamel};
 import ${mapperPackage}.${modelNameUpperCamel}Mapper;
 import ${pageClassPath};
@@ -16,13 +15,8 @@ import org.apache.ibatis.annotations.Param;
  *
  * Created by ${author} on ${date}.
  */
-@Service
-public class ${modelNameUpperCamel}Service implements I${modelNameUpperCamel}Service{
-
-	@Autowired
-    private ${modelNameUpperCamel}Mapper ${modelNameLowerCamel}Mapper;
-    
-	<#list serviceMethodsList as serviceMethod>
+public interface I${modelNameUpperCamel}Service {
+<#list interfaceMethodsList as serviceMethod>
 ${serviceMethod!''}
-	</#list>
+</#list>
 }

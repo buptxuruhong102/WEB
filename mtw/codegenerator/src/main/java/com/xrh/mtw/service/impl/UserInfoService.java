@@ -1,5 +1,6 @@
-package com.xrh.mtw.service;
+package com.xrh.mtw.service.impl;
 
+import com.xrh.mtw.service.IUserInfoService;
 import com.xrh.mtw.entity.UserInfo;
 import com.xrh.mtw.dao.UserInfoMapper;
 import com.codegen.vo.Page;
@@ -13,51 +14,61 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  *
- * Created by mybatis plugin on 2018/11/19.
+ * Created by mybatis plugin on 2018/12/03.
  */
 @Service
-public class UserInfoService {
+public class UserInfoService implements IUserInfoService{
 
 	@Autowired
     private UserInfoMapper userInfoMapper;
     
-    public int deleteByPrimaryKey(Integer id){
+    @Override 
+    public int removeByPrimaryKey(Integer id){
         return userInfoMapper.deleteByPrimaryKey(id);
     }
 
-    public int insert(UserInfo record){
+    @Override 
+    public int add(UserInfo record){
         return userInfoMapper.insert(record);
     }
 
-    public int insertSelective(UserInfo record){
+    @Override 
+    public int addSelective(UserInfo record){
         return userInfoMapper.insertSelective(record);
     }
 
-    public UserInfo selectByPrimaryKey(Integer id){
+    @Override 
+    public UserInfo queryByPrimaryKey(Integer id){
         return userInfoMapper.selectByPrimaryKey(id);
     }
 
-    public int updateByPrimaryKeySelective(UserInfo record){
+    @Override 
+    public int modifyByPrimaryKeySelective(UserInfo record){
         return userInfoMapper.updateByPrimaryKeySelective(record);
     }
 
-    public int updateByPrimaryKey(UserInfo record){
+    @Override 
+    public int modifyByPrimaryKey(UserInfo record){
         return userInfoMapper.updateByPrimaryKey(record);
     }
 
-    public List<UserInfo> selectByCondition(UserInfo record){
+    @Override 
+    public List<UserInfo> queryByCondition(UserInfo record){
         return userInfoMapper.selectByCondition(record);
     }
 
-    public List<UserInfo> selectAll(){
+    @Override 
+    public List<UserInfo> queryAll(){
         return userInfoMapper.selectAll();
     }
 
+    @Override 
     public Integer count(UserInfo record){
         return userInfoMapper.count(record);
     }
 
-    public int deleteByCondition(UserInfo record){
+    @Override 
+    public int removeByCondition(UserInfo record){
         return userInfoMapper.deleteByCondition(record);
     }
 

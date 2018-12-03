@@ -37,14 +37,31 @@ public class ServiceGenerator extends CodeGeneratorManager implements CodeGenera
                                                                 modelNameUpperCamel);
             data.put("serviceMethodsList", serviceMethodsList);
 
+
+            List<String> interfaceMethodsList = getInterfaceMethods(getMapperJavaFilePath(tableName, modelName,
+                    customMapping,
+                    modelNameUpperCamel),
+                    modelNameUpperCamel);
+            data.put("interfaceMethodsList", interfaceMethodsList);
+
             // 创建 Service 接口
             File serviceFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + customMapping
-                                        + modelNameUpperCamel + "Service.java");
+                                        + "impl" + customMapping + modelNameUpperCamel + "Service.java");
             // 查看父级目录是否存在, 不存在则创建
             if (!serviceFile.getParentFile().exists()) {
                 serviceFile.getParentFile().mkdirs();
             }
             cfg.getTemplate("service.ftl").process(data, new FileWriter(serviceFile));
+            logger.info(modelNameUpperCamel + "Service.java 生成成功!");
+
+            // 创建 Service 接口
+            File iserviceFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + customMapping
+                    + "I" + modelNameUpperCamel + "Service.java");
+            // 查看父级目录是否存在, 不存在则创建
+            if (!iserviceFile.getParentFile().exists()) {
+                iserviceFile.getParentFile().mkdirs();
+            }
+            cfg.getTemplate("iservice.ftl").process(data, new FileWriter(iserviceFile));
             logger.info(modelNameUpperCamel + "Service.java 生成成功!");
 
         } catch (Exception e) {
@@ -82,9 +99,10 @@ public class ServiceGenerator extends CodeGeneratorManager implements CodeGenera
                 List<String> methodParamTypeList = MethodUtil.getMethodParamTypeList(content);
                 List<String> methodParanNameList = MethodUtil.getMethodParamNameList(content);
                 String mapperName = StringUtils.toLowerCaseFirstOne(modelName) + "Mapper";
-                StringBuilder methodContent = new StringBuilder();                
+                StringBuilder methodContent = new StringBuilder();
+                methodContent.append(StringUtils.FOUR_SPACES).append("@Override \n");
                 methodContent.append(StringUtils.FOUR_SPACES).append("public ").append(methodType).append(" ")
-                    .append(methodName).append("(");
+                    .append(MethodUtil.convertMethodName(methodName)).append("(");
                 int index = 0;
                 for(String methodParamType : methodParamTypeList) {
                     methodContent.append(MethodUtil.getMethodParamType(methodName,methodParamType,modelName));
@@ -104,4 +122,43 @@ public class ServiceGenerator extends CodeGeneratorManager implements CodeGenera
         }
         return serviceMethodsContentList;
     }
+
+    public static List<String> getInterfaceMethods(String mapperJavaFilePath, String modelName) throws IOException {
+        List<String> serviceMethodsContentList = new ArrayList<String>();
+        String methodPattern = "([^import|^package]).*;";
+        List<String> contentList = FileUtil.readFile2List(mapperJavaFilePath);
+        for (String content : contentList) {
+            boolean match = Pattern.matches(methodPattern, content);
+            if (match) {
+                // 去掉前后的空格
+                content = content.trim();
+                // 去掉后面的";"
+                content = content.substring(0, content.length() - 1);
+                String methodType = MethodUtil.getMethodReturnType(content);
+                String methodName = MethodUtil.getMethodName(content);
+                List<String> methodParamTypeList = MethodUtil.getMethodParamTypeList(content);
+                List<String> methodParanNameList = MethodUtil.getMethodParamNameList(content);
+                String mapperName = StringUtils.toLowerCaseFirstOne(modelName) + "Mapper";
+                StringBuilder methodContent = new StringBuilder();
+                methodContent.append(StringUtils.FOUR_SPACES).append(" ").append(methodType).append(" ")
+                        .append(MethodUtil.convertMethodName(methodName)).append("(");
+                int index = 0;
+                for(String methodParamType : methodParamTypeList) {
+                    methodContent.append(MethodUtil.getMethodParamType(methodName,methodParamType,modelName));
+                    methodContent.append(" ").append(methodParanNameList.get(index));
+                    if(index<methodParamTypeList.size()-1) {
+                        methodContent.append(", ");
+                    }
+                    index++;
+                }
+                methodContent.append(");\n");
+
+                serviceMethodsContentList.add(methodContent.toString());
+            }
+        }
+        return serviceMethodsContentList;
+    }
+
+
+
 }

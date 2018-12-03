@@ -1,6 +1,6 @@
 package com.xrh.mtw.controller;
 import com.xrh.mtw.entity.UserInfo;
-import com.xrh.mtw.service.UserInfoService;
+import com.xrh.mtw.service.IUserInfoService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +17,31 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  *
- * Created by mybatis plugin on 2018/11/19.
+ * Created by mybatis plugin on 2018/12/03.
  */
 @Controller
 @RequestMapping("/userInfo")
 public class UserInfoController {
 
     @Autowired
-    UserInfoService userInfoService;
+    private IUserInfoService userInfoService;
 
-    @RequestMapping("/selectAll")
+    @RequestMapping("/findAll")
     @ResponseBody
-    public Result<List<UserInfo>> selectAll(){
-        return Result.success(userInfoService.selectAll());
+    public Result<List<UserInfo>> queryAll(){
+        return Result.success(userInfoService.queryAll());
     }
 
-    @RequestMapping("/select")
+    @RequestMapping("/find")
     @ResponseBody
-    public Result<UserInfo> selectByPrimaryKey(Integer id){
-        return Result.success(userInfoService.selectByPrimaryKey(id));
+    public Result<UserInfo> queryByPrimaryKey(Integer id){
+        return Result.success(userInfoService.queryByPrimaryKey(id));
     }
 
-    @RequestMapping("/selectByCondition")
+    @RequestMapping("/findByCondition")
     @ResponseBody
-    public Result<List<UserInfo>> selectByCondition(UserInfo record){
-        return Result.success(userInfoService.selectByCondition(record));
+    public Result<List<UserInfo>> queryByCondition(UserInfo record){
+        return Result.success(userInfoService.queryByCondition(record));
     }
 
     @RequestMapping("/count")
@@ -50,36 +50,36 @@ public class UserInfoController {
         return Result.success(userInfoService.count(record));
     }
 
-    @RequestMapping("/insert")
+    @RequestMapping("/save")
     @ResponseBody
-    public Result<Integer> insertSelective(UserInfo record){
-        return Result.success(userInfoService.insertSelective(record));
+    public Result<Integer> addSelective(UserInfo record){
+        return Result.success(userInfoService.addSelective(record));
     }
 
-    @RequestMapping("/update")
+    @RequestMapping("/modify")
     @ResponseBody
-    public Result<Integer> updateByPrimaryKeySelective(UserInfo record){
-        return Result.success(userInfoService.updateByPrimaryKeySelective(record));
+    public Result<Integer> modifyByPrimaryKeySelective(UserInfo record){
+        return Result.success(userInfoService.modifyByPrimaryKeySelective(record));
     }
 
-    @RequestMapping("/deleteByCondition")
+    @RequestMapping("/removeByCondition")
     @ResponseBody
-    public Result<Integer> deleteByCondition(UserInfo record){
-        return Result.success(userInfoService.deleteByCondition(record));
+    public Result<Integer> removeByCondition(UserInfo record){
+        return Result.success(userInfoService.removeByCondition(record));
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/remove")
     @ResponseBody
-    public Result<Integer> deleteByPrimaryKey(Integer id){
-        return Result.success(userInfoService.deleteByPrimaryKey(id));
+    public Result<Integer> removeByPrimaryKey(Integer id){
+        return Result.success(userInfoService.removeByPrimaryKey(id));
     }
 
 
-    @RequestMapping("/selectByPage")
+    @RequestMapping("/findByPage")
     @ResponseBody
-    public PageInfo selectByPage(UserInfo userInfo,int pageNum, int pageSize){
+    public PageInfo findByPage(UserInfo userInfo,int pageNum, int pageSize){
         PageHelper.startPage(pageNum, pageSize); // 核心分页代码
-        List<UserInfo> list =  userInfoService.selectByCondition(userInfo);
+        List<UserInfo> list =  userInfoService.queryByCondition(userInfo);
         PageInfo pageInfo = new PageInfo(list);
         return pageInfo;
     }

@@ -43,7 +43,9 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
             if (!controllerFile.getParentFile().exists()) {
                 controllerFile.getParentFile().mkdirs();
             }
-            logger.info("模版数据: " + JSON.toJSONString(data));
+            logger.info("=====================模版数据:============================");
+            logger.info(JSON.toJSONString(data));
+            logger.info("=================================================");
             cfg.getTemplate("controller.ftl").process(data, new FileWriter(controllerFile));
             logger.info(modelNameUpperCamel + "Controller.java 生成成功!");
         } catch (Exception e) {
@@ -130,10 +132,10 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("return Result.success(result);\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 } else {
-                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"/" + methodActionType
+                    methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"/" + MethodUtil.convertControllerName(methodActionType)
                                                                          + "\")\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("@ResponseBody\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<").append(MethodUtil.typeConvert(methodReturnType)).append("> ").append(methodName).append("(");
+                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<").append(MethodUtil.typeConvert(methodReturnType)).append("> ").append(MethodUtil.convertMethodName(methodName)).append("(");
                     
                     int index = 0;
                     for(String methodParamType : methodParamTypeList) {
@@ -147,7 +149,7 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                     
                     methodContent.append(")").append("{\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("return Result.success(").append(serviceName).append("."
-                                                                                                                                                              + methodName).append("(").append(MethodUtil.listToString(methodParanNameList)).append("))").append(";\n");
+                                                                                                                                                              + MethodUtil.convertMethodName(methodName)).append("(").append(MethodUtil.listToString(methodParanNameList)).append("))").append(";\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 }
                 methodContentMap.put(methodActionType, methodContent.toString());

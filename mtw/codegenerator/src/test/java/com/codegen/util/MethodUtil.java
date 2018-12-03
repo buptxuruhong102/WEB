@@ -215,4 +215,17 @@ public class MethodUtil {
         }
         return str.toString();
     }
+
+    public static String convertMethodName(String name){
+        return name.replace("insert","add")
+                .replace("select","query")
+                .replace("update","modify")
+                .replace("delete","remove");
+    }
+    public static String convertControllerName(String name){
+        return name.replace("insert","save")
+                .replace("select","find")
+                .replace("update","modify")
+                .replace("delete","remove");
+    }
 }
