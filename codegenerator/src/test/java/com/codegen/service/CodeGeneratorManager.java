@@ -3,6 +3,7 @@ package com.codegen.service;
 import com.codegen.service.impl.ControllerGenerator;
 import com.codegen.service.impl.ModelAndMapperGenerator;
 import com.codegen.service.impl.ServiceGenerator;
+import com.codegen.service.impl.WebGenerator;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.mybatis.generator.api.IntrospectedTable.TargetRuntime;
@@ -93,7 +94,6 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
     /**
      * 通过数据库表名, 生成代码 如表名为 gen_test_demo 将生成 Demo & DemoMapper & DemoService & DemoServiceImpl & DemoController
      * 
-     * @param flag 标志
      * @param tableNames 表名数组
      */
     public void genCode(String... tableNames) {
@@ -112,6 +112,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         new ModelAndMapperGenerator().genCode(tableName);
         new ServiceGenerator().genCode(tableName);
         new ControllerGenerator().genCode(tableName);
+        new WebGenerator().genCode(tableName);
     }
 
     /**
@@ -155,6 +156,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         JDBC_DRIVER_CLASS_NAME = prop.getProperty("jdbc.driver.class.name");
 
         JAVA_PATH = prop.getProperty("java.path");
+        WEB_PATH = prop.getProperty("web.path");
         RESOURCES_PATH = prop.getProperty("resources.path");
         TEMPLATE_FILE_PATH = PROJECT_PATH + prop.getProperty("template.file.path");
 

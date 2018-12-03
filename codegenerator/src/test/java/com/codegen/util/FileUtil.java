@@ -8,10 +8,7 @@
  */
 package com.codegen.util;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +51,22 @@ public class FileUtil {
         br.close();
         fr.close();
         return fileList;
+    }
+
+    public static List<String> listAllFiles(File dir, String parent){
+        List<String> filePaths = new ArrayList<>();
+        if(dir.exists()){
+            File[] files = dir.listFiles();
+            for (File file: files){
+                if(file.isFile()){
+                    filePaths.add(parent + "/" + file.getName());
+                }else {
+                    List<String> paths = listAllFiles(file, parent + "/" + file.getName());
+                    filePaths.addAll(paths);
+                }
+            }
+        }
+
+        return filePaths;
     }
 }

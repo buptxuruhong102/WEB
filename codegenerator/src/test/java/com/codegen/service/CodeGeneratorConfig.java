@@ -13,6 +13,8 @@ public class CodeGeneratorConfig {
 	
 	// 项目在硬盘上的基础路径
 	protected static final String PROJECT_PATH = System.getProperty("user.dir");
+	// web文件路径
+	protected static String WEB_PATH;
 	// java文件路径
 	protected static String JAVA_PATH;
 	// 资源文件路径
