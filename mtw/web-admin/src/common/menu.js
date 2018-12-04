@@ -8,10 +8,12 @@ const menuData = [{
         {
         name: 'userInfo',
         path: 'userInfo',
+          authority: ['admin', 'user'],
     },
     {
         name: 'role',
         path: 'role',
+        authority: ['admin'],//配置准入权限,可以配置多个角色
     },
   ],
 }];

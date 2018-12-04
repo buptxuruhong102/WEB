@@ -1,0 +1,4 @@
+AuthorizedRoute -> BasicLayout ->
+
+common/router.js 的dynamicWrapper方法动态创建组件时传递了
+routerData: routerDataCache,

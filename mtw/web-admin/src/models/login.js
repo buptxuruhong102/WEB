@@ -25,6 +25,7 @@ export default {
     },
     *logout({ payload }, { put, select }) {
       try {
+        console.log("payload",payload)
         console.log("window.location.href",window.location.href)
         // get location pathname
         //const urlParams = new URL(window.location.href);

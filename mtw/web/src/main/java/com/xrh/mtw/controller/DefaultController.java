@@ -22,26 +22,28 @@ import java.util.Map;
 public class DefaultController {
 
     @RequestMapping("/api/login/account")
-    public String login(@RequestBody Map<String, String> map, HttpServletRequest request, Model model){
+    @ResponseBody
+    public Map<String, Object> login(@RequestBody Map<String, String> map, HttpServletRequest request){
+        Map<String, Object>  model = new HashMap<>();
         String userName = map.get("userName");
         String password = map.get("password");
         String type = map.get("type");
 
         if(password.equals("888888") && userName.equals("admin")){
-            model.addAttribute("status","ok");
-            model.addAttribute("currentAuthority","admin");
+            model.put("status","ok");
+            model.put("currentAuthority","admin");
             request.getSession().setAttribute("userName", userName);
         }else if(password.equals("123456") && userName.equals("user")){
-            model.addAttribute("status","ok");
-            model.addAttribute("currentAuthority","user");
+            model.put("status","ok");
+            model.put("currentAuthority","user");
             request.getSession().setAttribute("userName", userName);
         }else {
-            model.addAttribute("status","error");
-            model.addAttribute("currentAuthority","guest");
+            model.put("status","ok");
+            model.put("currentAuthority","guest");
         }
-        model.addAttribute("type",type);
+        model.put("type",type);
 
-        return null;
+        return model;
     }
 
     @RequestMapping("/webSiteMan/api/currentUser")
@@ -51,7 +53,7 @@ public class DefaultController {
         Object name = request.getAttribute("pin");
 
         model.put("userid","00000001");
-        model.put("name",name);
+        model.put("name","xuruhong");
         model.put("notifyCount","0");
 
         return model;

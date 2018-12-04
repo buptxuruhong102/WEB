@@ -109,10 +109,12 @@ class BasicLayout extends React.PureComponent {
       urlParams.searchParams.delete('redirect');
       window.history.replaceState(null, 'redirect', urlParams.href);
     } else {
-      return '/website/info';
+      return '/website/userInfo';
     }
     return redirect;
   }
+
+
   handleMenuCollapse = (collapsed) => {
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
@@ -148,6 +150,7 @@ class BasicLayout extends React.PureComponent {
     const {
       currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
+    //console.log("basic", this.props)
     const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
