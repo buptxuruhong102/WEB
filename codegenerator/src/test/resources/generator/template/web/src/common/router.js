@@ -20,7 +20,7 @@ const dynamicWrapper = (app, models, component) => {
     models.forEach((model) => {
       if (modelNotExisted(app, model)) {
         // eslint-disable-next-line
-        app.model(require(`../models/${model}`).default);
+        app.model(require(`../models/${r"${model}"}`).default);
       }
     });
     return (props) => {
@@ -37,7 +37,7 @@ const dynamicWrapper = (app, models, component) => {
   return dynamic({
     app,
     models: () => models.filter(
-      model => modelNotExisted(app, model)).map(m => import(`../models/${m}.js`)
+      model => modelNotExisted(app, model)).map(m => import(`../models/${r"${m}"}.js`)
     ),
     // add routerData prop
     component: () => {
@@ -114,7 +114,7 @@ export const getRouterData = (app) => {
     // Regular match item name
     // eg.  router /user/:id === /user/chen
     const pathRegexp = pathToRegexp(path);
-    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
+    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(${r"`${key}`"}));
     let menuItem = {};
     // If menuKey is not empty
     if (menuKey) {

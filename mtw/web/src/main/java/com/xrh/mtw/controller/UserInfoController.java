@@ -1,20 +1,24 @@
 package com.xrh.mtw.controller;
-import com.codegen.vo.Result;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.xrh.mtw.entity.UserInfo;
 import com.xrh.mtw.service.IUserInfoService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageHelper;
+import com.codegen.vo.Result;
+import com.codegen.vo.Page;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  *
- * Created by mybatis plugin on 2018/12/03.
+ * Created by mybatis plugin on 2018/12/04.
  */
 @Controller
 @RequestMapping("/api/userInfo")
@@ -22,6 +26,7 @@ public class UserInfoController {
 
     @Autowired
     private IUserInfoService userInfoService;
+
 
     @RequestMapping("/findAll")
     @ResponseBody
@@ -70,7 +75,6 @@ public class UserInfoController {
     public Result<Integer> removeByPrimaryKey(Integer id){
         return Result.success(userInfoService.removeByPrimaryKey(id));
     }
-
 
     @RequestMapping("/findByPage")
     @ResponseBody

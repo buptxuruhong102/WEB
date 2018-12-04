@@ -1,4 +1,4 @@
-import { queryList, deleteInfo, addInfo, modifyInfo } from '../services/userinfo';
+import { queryList, deleteInfo, addInfo, modifyInfo } from '../services/userInfo';
 
 export default {
   namespace: 'userInfo',

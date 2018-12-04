@@ -179,6 +179,7 @@ export default class UserInfo extends PureComponent {
             this.setState({
               modalVisible: false,
             });
+            this.refreshTable();
           }
         }else{
           message.error(response.msg);

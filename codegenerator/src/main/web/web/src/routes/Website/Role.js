@@ -31,30 +31,40 @@ const CreateForm = Form.create()((props) => {
       onOk={okHandle}
       onCancel={cancelHandle}
     >
-      <#list allColumnsList as column>
-      <FormItem
+            <FormItem
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 15 }}
-          label="${column}"
+          label="roleName"
       >
-          {form.getFieldDecorator('${column}', {
-              initialValue: rowRecord.${column},
+          {form.getFieldDecorator('roleName', {
+              initialValue: rowRecord.roleName,
               rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
           })(
               <Input placeholder="请输入" />
           )}
       </FormItem>
-    </#list>
+      <FormItem
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 15 }}
+          label="roleDesc"
+      >
+          {form.getFieldDecorator('roleDesc', {
+              initialValue: rowRecord.roleDesc,
+              rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
+          })(
+              <Input placeholder="请输入" />
+          )}
+      </FormItem>
     </Modal>
   );
 });
 
-@connect(({ ${modelNameLowerCamel}, loading }) => ({
-    ${modelNameLowerCamel},
-  loading: loading.models.${modelNameLowerCamel},
+@connect(({ role, loading }) => ({
+    role,
+  loading: loading.models.role,
 }))
 @Form.create()
-export default class ${modelNameUpperCamel} extends PureComponent {
+export default class Role extends PureComponent {
   state = {
     modalTitle: "新建站点",
     modalVisible: false,
@@ -67,14 +77,14 @@ export default class ${modelNameUpperCamel} extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: '${modelNameLowerCamel}/fetch',
+      type: 'role/fetch',
     });
   }
 
   refreshTable = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: '${modelNameLowerCamel}/fetch',
+      type: 'role/fetch',
     });
   }
 
@@ -95,11 +105,11 @@ export default class ${modelNameUpperCamel} extends PureComponent {
       ...filters,
     };
     if (sorter.field) {
-      params.sorter = `${r"${sorter.field}_${sorter.order}"}`;
+      params.sorter = `${sorter.field}_${sorter.order}`;
     }
 
     dispatch({
-      type: '${modelNameLowerCamel}/fetch',
+      type: 'role/fetch',
       payload: params,
     });
   }
@@ -111,7 +121,7 @@ export default class ${modelNameUpperCamel} extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: '${modelNameLowerCamel}/fetch',
+      type: 'role/fetch',
       payload: {},
     });
   }
@@ -134,7 +144,7 @@ export default class ${modelNameUpperCamel} extends PureComponent {
       });
 
       dispatch({
-        type: '${modelNameLowerCamel}/fetch',
+        type: 'role/fetch',
         payload: values,
       });
     });
@@ -150,9 +160,9 @@ export default class ${modelNameUpperCamel} extends PureComponent {
 
   handleAdd = (fields) => {
     let id = this.state.rowRecord.id;
-    let _type = '${modelNameLowerCamel}/add';
+    let _type = 'role/add';
     if(id){
-      _type = '${modelNameLowerCamel}/modify';
+      _type = 'role/modify';
     }
     this.props.dispatch({
       type: _type,
@@ -169,6 +179,7 @@ export default class ${modelNameUpperCamel} extends PureComponent {
             this.setState({
               modalVisible: false,
             });
+            this.refreshTable();
           }
         }else{
           message.error(response.msg);
@@ -181,7 +192,7 @@ export default class ${modelNameUpperCamel} extends PureComponent {
   onDelete = (record)=>{
     const { dispatch } = this.props;
     dispatch({
-      type: '${modelNameLowerCamel}/delete',
+      type: 'role/delete',
       payload:{id: record.id},
       callback: (response) =>{
         if(response && response.code == 200){
@@ -206,18 +217,21 @@ export default class ${modelNameUpperCamel} extends PureComponent {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        < gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <#list allColumnsList as column>
-          <#if column_index gt 0 && column_index lt 3>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="${column}">
-                {getFieldDecorator('${column}')(
+            <FormItem label="roleName">
+                {getFieldDecorator('roleName')(
                     <Input placeholder="请输入" />
                 )}
             </FormItem>
           </Col>
-          </#if>
-        </#list>
+          <Col md={8} sm={24}>
+            <FormItem label="roleDesc">
+                {getFieldDecorator('roleDesc')(
+                    <Input placeholder="请输入" />
+                )}
+            </FormItem>
+          </Col>
 
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
@@ -235,7 +249,7 @@ export default class ${modelNameUpperCamel} extends PureComponent {
   }
 
   render() {
-    const { ${modelNameLowerCamel}: { data, areaGroups }, loading } = this.props;
+    const { role: { data, areaGroups }, loading } = this.props;
     const { modalVisible, rowRecord, modalTitle } = this.state;
 
     const parentMethods = {
@@ -253,12 +267,18 @@ export default class ${modelNameUpperCamel} extends PureComponent {
     };
 
     const columns = [
-      <#list allColumnsList as column>
         {
-            title: '${column}',
-            dataIndex: '${column}',
+            title: 'id',
+            dataIndex: 'id',
         },
-      </#list>
+        {
+            title: 'roleName',
+            dataIndex: 'roleName',
+        },
+        {
+            title: 'roleDesc',
+            dataIndex: 'roleDesc',
+        },
       {
         title: '操作',
         render: (text, record) => (

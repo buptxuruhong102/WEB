@@ -31,40 +31,32 @@ const CreateForm = Form.create()((props) => {
       onOk={okHandle}
       onCancel={cancelHandle}
     >
-            <FormItem
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 15 }}
-          label="name"
-      >
-          {form.getFieldDecorator('name', {
-              initialValue: rowRecord.name,
-              rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
-          })(
-              <Input placeholder="请输入" />
-          )}
-      </FormItem>
+      <#list columnInfoList as column>
+      <#if !column.primaryKey>
       <FormItem
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 15 }}
-          label="age"
+          label="${column.propertyName}"
       >
-          {form.getFieldDecorator('age', {
-              initialValue: rowRecord.age,
+          {form.getFieldDecorator('${column.propertyName}', {
+              initialValue: rowRecord.${column.propertyName},
               rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
           })(
               <Input placeholder="请输入" />
           )}
       </FormItem>
+    </#if>
+    </#list>
     </Modal>
   );
 });
 
-@connect(({ userInfo, loading }) => ({
-    userInfo,
-  loading: loading.models.userInfo,
+@connect(({ ${modelNameLowerCamel}, loading }) => ({
+    ${modelNameLowerCamel},
+  loading: loading.models.${modelNameLowerCamel},
 }))
 @Form.create()
-export default class UserInfo extends PureComponent {
+export default class ${modelNameUpperCamel} extends PureComponent {
   state = {
     modalTitle: "新建站点",
     modalVisible: false,
@@ -77,14 +69,14 @@ export default class UserInfo extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/fetch',
+      type: '${modelNameLowerCamel}/fetch',
     });
   }
 
   refreshTable = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/fetch',
+      type: '${modelNameLowerCamel}/fetch',
     });
   }
 
@@ -105,11 +97,11 @@ export default class UserInfo extends PureComponent {
       ...filters,
     };
     if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
+      params.sorter = `${r"${sorter.field}_${sorter.order}"}`;
     }
 
     dispatch({
-      type: 'userInfo/fetch',
+      type: '${modelNameLowerCamel}/fetch',
       payload: params,
     });
   }
@@ -121,7 +113,7 @@ export default class UserInfo extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'userInfo/fetch',
+      type: '${modelNameLowerCamel}/fetch',
       payload: {},
     });
   }
@@ -144,7 +136,7 @@ export default class UserInfo extends PureComponent {
       });
 
       dispatch({
-        type: 'userInfo/fetch',
+        type: '${modelNameLowerCamel}/fetch',
         payload: values,
       });
     });
@@ -160,9 +152,9 @@ export default class UserInfo extends PureComponent {
 
   handleAdd = (fields) => {
     let id = this.state.rowRecord.id;
-    let _type = 'userInfo/add';
+    let _type = '${modelNameLowerCamel}/add';
     if(id){
-      _type = 'userInfo/modify';
+      _type = '${modelNameLowerCamel}/modify';
     }
     this.props.dispatch({
       type: _type,
@@ -179,6 +171,7 @@ export default class UserInfo extends PureComponent {
             this.setState({
               modalVisible: false,
             });
+            this.refreshTable();
           }
         }else{
           message.error(response.msg);
@@ -191,7 +184,7 @@ export default class UserInfo extends PureComponent {
   onDelete = (record)=>{
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/delete',
+      type: '${modelNameLowerCamel}/delete',
       payload:{id: record.id},
       callback: (response) =>{
         if(response && response.code == 200){
@@ -217,20 +210,17 @@ export default class UserInfo extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <#list columnInfoList as column>
+          <#if column_index gt 0 && column_index lt 3>
           <Col md={8} sm={24}>
-            <FormItem label="name">
-                {getFieldDecorator('name')(
+            <FormItem label="${column.propertyName}">
+                {getFieldDecorator('${column.propertyName}')(
                     <Input placeholder="请输入" />
                 )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="age">
-                {getFieldDecorator('age')(
-                    <Input placeholder="请输入" />
-                )}
-            </FormItem>
-          </Col>
+          </#if>
+        </#list>
 
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
@@ -248,7 +238,7 @@ export default class UserInfo extends PureComponent {
   }
 
   render() {
-    const { userInfo: { data, areaGroups }, loading } = this.props;
+    const { ${modelNameLowerCamel}: { data, areaGroups }, loading } = this.props;
     const { modalVisible, rowRecord, modalTitle } = this.state;
 
     const parentMethods = {
@@ -266,18 +256,12 @@ export default class UserInfo extends PureComponent {
     };
 
     const columns = [
+      <#list columnInfoList as column>
         {
-            title: 'id',
-            dataIndex: 'id',
+            title: '${column.propertyName}',
+            dataIndex: '${column.propertyName}',
         },
-        {
-            title: 'name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'age',
-            dataIndex: 'age',
-        },
+      </#list>
       {
         title: '操作',
         render: (text, record) => (

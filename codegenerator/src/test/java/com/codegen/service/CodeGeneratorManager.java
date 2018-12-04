@@ -1,5 +1,6 @@
 package com.codegen.service;
 
+import com.codegen.model.ColumnInfo;
 import com.codegen.service.impl.ControllerGenerator;
 import com.codegen.service.impl.ModelAndMapperGenerator;
 import com.codegen.service.impl.ServiceGenerator;
@@ -37,6 +38,8 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
      * all columns of current generated table.
      */
     public static List<String> allColumnsList = new ArrayList<String>();
+
+    public static List<ColumnInfo> columnInfoList = new ArrayList<>();
 
     static {
         // 初始化配置信息

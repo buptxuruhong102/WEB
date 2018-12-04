@@ -1,7 +1,7 @@
-import { queryList, deleteInfo, addInfo, modifyInfo } from '../services/userInfo';
+import { queryList, deleteInfo, addInfo, modifyInfo } from '../services/role';
 
 export default {
-  namespace: 'userInfo',
+  namespace: 'role',
 
   state: {
     data: {

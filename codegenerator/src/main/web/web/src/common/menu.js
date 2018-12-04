@@ -9,6 +9,10 @@ const menuData = [{
         name: 'userInfo',
         path: 'userInfo',
     },
+    {
+        name: 'role',
+        path: 'role',
+    },
   ],
 }];
 

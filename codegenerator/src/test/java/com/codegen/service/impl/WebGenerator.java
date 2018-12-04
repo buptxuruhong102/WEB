@@ -34,7 +34,7 @@ public class WebGenerator extends CodeGeneratorManager implements CodeGenerator 
         String modelNameLowerCamel = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, modelNameUpperCamel);
 
         Map<String, Object> data = DataUtil.getDataMapInit(tableName, modelName, modelNameUpperCamel);
-        data.put("allColumnsList",allColumnsList);
+        data.put("columnInfoList",columnInfoList);
 
         Map<String, String> tableInfo = new HashMap<>();
         tableInfo.put("modelNameUpperCamel", modelNameUpperCamel);

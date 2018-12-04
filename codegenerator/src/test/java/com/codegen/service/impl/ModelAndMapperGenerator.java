@@ -1,6 +1,7 @@
 package com.codegen.service.impl;
 
 import com.codegen.generator.CustomizeJavaMapperGenerator;
+import com.codegen.model.ColumnInfo;
 import com.codegen.service.CodeGenerator;
 import com.codegen.service.CodeGeneratorManager;
 import com.codegen.util.StringUtils;
@@ -74,15 +75,29 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             List<IntrospectedTable> list = (List<IntrospectedTable>)field.get(context);
             IntrospectedTable introspectedTable = list.get(0);
             List<IntrospectedColumn> allColumns = introspectedTable.getAllColumns();
+            allColumnsList.clear();
+            columnInfoList.clear();
             for(IntrospectedColumn column :allColumns) {
                 allColumnsList.add(column.getActualColumnName());
+
+                ColumnInfo columnInfo = new ColumnInfo();
+                columnInfo.setColumnName(column.getActualColumnName());
+                columnInfo.setPropertyName(column.getJavaProperty());
+                columnInfoList.add(columnInfo);
             }
             List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+            primaryColumnsList.clear();
             if(primaryKeyColumns!=null && primaryKeyColumns.size()>0) {
                 for(IntrospectedColumn column :primaryKeyColumns) {
                     primaryColumnsList.add(column.getActualColumnName());
+                    for(ColumnInfo columnInfo: columnInfoList){
+                        if(columnInfo.getColumnName().equalsIgnoreCase(column.getActualColumnName())){
+                            columnInfo.setPrimaryKey(true);
+                        }
+                    }
                 }
             }
+
         } catch (Exception e) {
         }
     }

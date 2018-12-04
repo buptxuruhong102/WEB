@@ -34,10 +34,10 @@ const CreateForm = Form.create()((props) => {
             <FormItem
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 15 }}
-          label="id"
+          label="roleName"
       >
-          {form.getFieldDecorator('id', {
-              initialValue: rowRecord.id,
+          {form.getFieldDecorator('roleName', {
+              initialValue: rowRecord.roleName,
               rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
           })(
               <Input placeholder="请输入" />
@@ -46,22 +46,10 @@ const CreateForm = Form.create()((props) => {
       <FormItem
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 15 }}
-          label="NAME"
+          label="roleDesc"
       >
-          {form.getFieldDecorator('NAME', {
-              initialValue: rowRecord.NAME,
-              rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
-          })(
-              <Input placeholder="请输入" />
-          )}
-      </FormItem>
-      <FormItem
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 15 }}
-          label="age"
-      >
-          {form.getFieldDecorator('age', {
-              initialValue: rowRecord.age,
+          {form.getFieldDecorator('roleDesc', {
+              initialValue: rowRecord.roleDesc,
               rules: [{ required: true, message: '请输入站点名称(前后不能有空格)',pattern: /^[\S]+$/ }],
           })(
               <Input placeholder="请输入" />
@@ -71,12 +59,12 @@ const CreateForm = Form.create()((props) => {
   );
 });
 
-@connect(({ userInfo, loading }) => ({
-    userInfo,
-  loading: loading.models.userInfo,
+@connect(({ role, loading }) => ({
+    role,
+  loading: loading.models.role,
 }))
 @Form.create()
-export default class UserInfo extends PureComponent {
+export default class Role extends PureComponent {
   state = {
     modalTitle: "新建站点",
     modalVisible: false,
@@ -89,14 +77,14 @@ export default class UserInfo extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/fetch',
+      type: 'role/fetch',
     });
   }
 
   refreshTable = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/fetch',
+      type: 'role/fetch',
     });
   }
 
@@ -121,7 +109,7 @@ export default class UserInfo extends PureComponent {
     }
 
     dispatch({
-      type: 'userInfo/fetch',
+      type: 'role/fetch',
       payload: params,
     });
   }
@@ -133,7 +121,7 @@ export default class UserInfo extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'userInfo/fetch',
+      type: 'role/fetch',
       payload: {},
     });
   }
@@ -156,7 +144,7 @@ export default class UserInfo extends PureComponent {
       });
 
       dispatch({
-        type: 'userInfo/fetch',
+        type: 'role/fetch',
         payload: values,
       });
     });
@@ -172,9 +160,9 @@ export default class UserInfo extends PureComponent {
 
   handleAdd = (fields) => {
     let id = this.state.rowRecord.id;
-    let _type = 'userInfo/add';
+    let _type = 'role/add';
     if(id){
-      _type = 'userInfo/modify';
+      _type = 'role/modify';
     }
     this.props.dispatch({
       type: _type,
@@ -191,6 +179,7 @@ export default class UserInfo extends PureComponent {
             this.setState({
               modalVisible: false,
             });
+            this.refreshTable();
           }
         }else{
           message.error(response.msg);
@@ -203,7 +192,7 @@ export default class UserInfo extends PureComponent {
   onDelete = (record)=>{
     const { dispatch } = this.props;
     dispatch({
-      type: 'userInfo/delete',
+      type: 'role/delete',
       payload:{id: record.id},
       callback: (response) =>{
         if(response && response.code == 200){
@@ -228,17 +217,17 @@ export default class UserInfo extends PureComponent {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        < gutter={{ md: 8, lg: 24, xl: 48 }}>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="NAME">
-                {getFieldDecorator('NAME')(
+            <FormItem label="roleName">
+                {getFieldDecorator('roleName')(
                     <Input placeholder="请输入" />
                 )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="age">
-                {getFieldDecorator('age')(
+            <FormItem label="roleDesc">
+                {getFieldDecorator('roleDesc')(
                     <Input placeholder="请输入" />
                 )}
             </FormItem>
@@ -260,7 +249,7 @@ export default class UserInfo extends PureComponent {
   }
 
   render() {
-    const { userInfo: { data, areaGroups }, loading } = this.props;
+    const { role: { data, areaGroups }, loading } = this.props;
     const { modalVisible, rowRecord, modalTitle } = this.state;
 
     const parentMethods = {
@@ -283,12 +272,12 @@ export default class UserInfo extends PureComponent {
             dataIndex: 'id',
         },
         {
-            title: 'NAME',
-            dataIndex: 'NAME',
+            title: 'roleName',
+            dataIndex: 'roleName',
         },
         {
-            title: 'age',
-            dataIndex: 'age',
+            title: 'roleDesc',
+            dataIndex: 'roleDesc',
         },
       {
         title: '操作',

@@ -4,10 +4,15 @@ const menuData = [{
   name: '菜单组1',
   icon: 'table',
   path: 'website',
-  children: [  {
-    name: '用户信息',
-    path: 'userinfo',
-  },
+  children: [
+        {
+        name: 'userInfo',
+        path: 'userInfo',
+    },
+    {
+        name: 'role',
+        path: 'role',
+    },
   ],
 }];
 

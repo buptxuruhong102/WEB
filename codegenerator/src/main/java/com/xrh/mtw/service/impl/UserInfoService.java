@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  *
- * Created by mybatis plugin on 2018/12/03.
+ * Created by mybatis plugin on 2018/12/04.
  */
 @Service
 public class UserInfoService implements IUserInfoService{

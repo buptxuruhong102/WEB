@@ -78,13 +78,12 @@ export const getRouterData = (app) => {
     },
 
     //业务功能
-    '/website/userinfo': {
-      component: dynamicWrapper(app, ['userinfo'], () => import('../routes/Website/Userinfo')),
+    '/website/userInfo': {
+        component: dynamicWrapper(app, ['userInfo'], () => import('../routes/Website/UserInfo')),
     },
-    '/website/info': {
-      component: dynamicWrapper(app, ['website'], () => import('../routes/Website/Website')),
+    '/website/role': {
+        component: dynamicWrapper(app, ['role'], () => import('../routes/Website/Role')),
     },
-
 
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
@@ -116,7 +115,7 @@ export const getRouterData = (app) => {
     // Regular match item name
     // eg.  router /user/:id === /user/chen
     const pathRegexp = pathToRegexp(path);
-    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
+    const menuKey = Object.keys(menuData).find(key => pathRegexp.test(``));
     let menuItem = {};
     // If menuKey is not empty
     if (menuKey) {

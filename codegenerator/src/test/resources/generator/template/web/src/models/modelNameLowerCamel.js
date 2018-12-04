@@ -1,4 +1,4 @@
-import ${r"{ queryList, deleteInfo, addInfo, modifyInfo }"} from '../services/userinfo';
+import ${r"{ queryList, deleteInfo, addInfo, modifyInfo }"} from '../services/${modelNameLowerCamel}';
 
 export default {
   namespace: '${modelNameLowerCamel}',
