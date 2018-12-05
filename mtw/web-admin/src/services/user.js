@@ -7,3 +7,7 @@ export async function query() {
 export async function queryCurrent() {
   return request('/webSiteMan/api/currentUser.json');
 }
+
+export async function queryMenu() {
+  return request('/api/menu');
+}

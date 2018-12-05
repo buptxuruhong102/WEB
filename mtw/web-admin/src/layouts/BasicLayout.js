@@ -36,7 +36,7 @@ const getRedirect = (item) => {
     }
   }
 };
-getMenuData().forEach(getRedirect);
+//getMenuData().forEach(getRedirect);
 
 const query = {
   'screen-xs': {
@@ -87,6 +87,9 @@ class BasicLayout extends React.PureComponent {
     });
     this.props.dispatch({
       type: 'user/fetchCurrent',
+    });
+    this.props.dispatch({
+      type: 'user/fetchMenu',
     });
   }
   getPageTitle() {
@@ -148,9 +151,11 @@ class BasicLayout extends React.PureComponent {
   }
   render() {
     const {
-      currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
+      currentUser, menu, collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
-    //console.log("basic", this.props)
+
+    let allMenu = getMenuData().concat(menu);
+    console.log("menu", allMenu)
     const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
@@ -160,7 +165,7 @@ class BasicLayout extends React.PureComponent {
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
           Authorized={Authorized}
-          menuData={getMenuData()}
+          menuData={allMenu}
           collapsed={collapsed}
           location={location}
           isMobile={this.state.isMobile}
@@ -222,6 +227,7 @@ class BasicLayout extends React.PureComponent {
 
 export default connect(({ user, global, loading }) => ({
   currentUser: user.currentUser,
+  menu: user.menu,
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,

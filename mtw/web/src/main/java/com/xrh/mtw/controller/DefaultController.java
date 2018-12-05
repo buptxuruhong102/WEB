@@ -59,6 +59,21 @@ public class DefaultController {
         return model;
     }
 
+
+    @RequestMapping("/api/menu")
+    @ResponseBody
+    public List<Map<String, Object>> menu(HttpServletRequest request, HttpServletResponse response){
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object>  model = new HashMap<>();
+        model.put("name","菜单2");
+        model.put("icon","table");
+        model.put("path","menu");
+
+        list.add(model);
+
+        return list;
+    }
+
     @RequestMapping(value = "/api/rule")
     public String rule(HttpServletRequest request,String no, Model model){
         System.out.println("no=" + no);
